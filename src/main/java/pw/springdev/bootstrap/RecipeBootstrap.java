@@ -18,6 +18,8 @@ import pw.springdev.repositories.CategoryRepository;
 import pw.springdev.repositories.RecipeRepository;
 import pw.springdev.repositories.UnitOfMeasureRepository;
 
+import javax.transaction.Transactional;
+
 /**
  * Created by FedorD on 2020-04-01
  */
@@ -36,6 +38,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
         recipeRepository.saveAll(getRecipes());
         log.debug("Loading Bootstrap Data");
