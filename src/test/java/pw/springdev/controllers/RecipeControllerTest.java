@@ -10,6 +10,7 @@ import pw.springdev.domain.Recipe;
 import pw.springdev.services.RecipeService;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,6 +44,7 @@ public class RecipeControllerTest {
 
         mockMvc.perform(get("/recipe/show/1"))
             .andExpect(status().isOk())
-            .andExpect(view().name("recipe/show"));
+            .andExpect(view().name("recipe/show"))
+            .andExpect(model().attributeExists("recipe"));
     }
 }
