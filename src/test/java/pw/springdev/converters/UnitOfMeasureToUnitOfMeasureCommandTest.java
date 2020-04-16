@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Test;
 import pw.springdev.commands.UnitOfMeasureCommand;
 import pw.springdev.domain.UnitOfMeasure;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UnitOfMeasureToUnitOfMeasureCommandTest {
 
     public static final String DESCRIPTION = "description";
-    public static final Long LONG_VALUE = new Long(1L);
+    public static final Long LONG_VALUE = Long.valueOf(1L);
 
     UnitOfMeasureToUnitOfMeasureCommand converter;
 
