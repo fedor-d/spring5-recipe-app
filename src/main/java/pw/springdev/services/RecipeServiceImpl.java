@@ -1,5 +1,9 @@
 package pw.springdev.services;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,10 +12,6 @@ import pw.springdev.converters.RecipeCommandToRecipe;
 import pw.springdev.converters.RecipeToRecipeCommand;
 import pw.springdev.domain.Recipe;
 import pw.springdev.repositories.RecipeRepository;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Created by FedorD on 2020-04-04
@@ -62,5 +62,11 @@ public class RecipeServiceImpl implements RecipeService {
         log.debug("Saved RecipeId: " + savedRecipe.getId());
 
         return recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand findCommandById(Long id) {
+        return recipeToRecipeCommand.convert(findById(id));
     }
 }
