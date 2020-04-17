@@ -21,7 +21,6 @@ import pw.springdev.services.UnitOfMeasureService;
 @Slf4j
 @Controller
 public class IngredientController {
-
     private final IngredientService ingredientService;
     private final RecipeService recipeService;
     private final UnitOfMeasureService unitOfMeasureService;
@@ -34,7 +33,6 @@ public class IngredientController {
     }
 
     @GetMapping("/recipe/{recipeId}/ingredients")
-    @RequestMapping
     public String listIngredients(@PathVariable String recipeId, Model model) {
         log.debug("Getting ingredient list for recipe id: " + recipeId);
 
@@ -93,7 +91,7 @@ public class IngredientController {
     }
 
     @GetMapping("recipe/{recipeId}/ingredient/{id}/delete")
-        public String deleteIngredient(@PathVariable String recipeId,
+    public String deleteIngredient(@PathVariable String recipeId,
         @PathVariable String id) {
 
         log.debug("deleting ingredient id:" + id);
