@@ -1,5 +1,6 @@
 package pw.springdev.converters;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pw.springdev.commands.RecipeCommand;
@@ -9,7 +10,9 @@ import pw.springdev.domain.Ingredient;
 import pw.springdev.domain.Notes;
 import pw.springdev.domain.Recipe;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class RecipeToRecipeCommandTest {
 
@@ -27,6 +30,7 @@ class RecipeToRecipeCommandTest {
     public static final Long INGRED_ID_1 = 3L;
     public static final Long INGRED_ID_2 = 4L;
     public static final Long NOTES_ID = 9L;
+    public static final Byte[] IMAGE = ArrayUtils.toObject("It's an IMAGE".getBytes());
     RecipeToRecipeCommand converter;
 
     @BeforeEach
@@ -60,6 +64,7 @@ class RecipeToRecipeCommandTest {
         recipe.setServings(SERVINGS);
         recipe.setSource(SOURCE);
         recipe.setUrl(URL);
+        recipe.setImage(IMAGE);
 
         Notes notes = new Notes();
         notes.setId(NOTES_ID);
@@ -101,5 +106,6 @@ class RecipeToRecipeCommandTest {
         assertEquals(NOTES_ID, command.getNotes().getId());
         assertEquals(2, command.getCategories().size());
         assertEquals(2, command.getIngredients().size());
+        assertEquals(IMAGE, command.getImage());
     }
 }
