@@ -1,5 +1,9 @@
 package pw.springdev.controllers;
 
+import java.util.Optional;
+
+import javax.swing.text.html.Option;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -10,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pw.springdev.commands.RecipeCommand;
 import pw.springdev.domain.Recipe;
+import pw.springdev.exceptions.NotFoundException;
 import pw.springdev.services.RecipeService;
 
 import static org.mockito.Mockito.any;
@@ -17,6 +22,7 @@ import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -54,6 +60,15 @@ public class RecipeControllerTest {
             .andExpect(status().isOk())
             .andExpect(view().name("recipe/show"))
             .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    public void testGetRecipeNotFound() throws Exception {
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+            .andExpect(status().isNotFound());
     }
 
     @Test

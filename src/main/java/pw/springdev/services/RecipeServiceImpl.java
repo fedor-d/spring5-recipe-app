@@ -11,6 +11,7 @@ import pw.springdev.commands.RecipeCommand;
 import pw.springdev.converters.RecipeCommandToRecipe;
 import pw.springdev.converters.RecipeToRecipeCommand;
 import pw.springdev.domain.Recipe;
+import pw.springdev.exceptions.NotFoundException;
 import pw.springdev.repositories.RecipeRepository;
 
 /**
@@ -33,7 +34,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Set<Recipe> getRecipes() {
-        log.debug("I'm in the service.");
+        log.debug("I'm in the service");
 
         Set<Recipe> recipeSet = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
@@ -41,12 +42,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe findById(Long id) {
+    public Recipe findById(Long l) {
 
-        Optional<Recipe> recipeOptional = recipeRepository.findById(id);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(l);
 
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe ".concat(id.toString()).concat(" Not Found!"));
+            //throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found");
         }
 
         return recipeOptional.get();
@@ -54,20 +56,18 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     @Transactional
-    public RecipeCommand saveRecipeCommand(RecipeCommand command) {
-
-        Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
-
-        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
-        log.debug("Saved RecipeId: " + savedRecipe.getId());
-
-        return recipeToRecipeCommand.convert(savedRecipe);
+    public RecipeCommand findCommandById(Long l) {
+        return recipeToRecipeCommand.convert(findById(l));
     }
 
     @Override
     @Transactional
-    public RecipeCommand findCommandById(Long id) {
-        return recipeToRecipeCommand.convert(findById(id));
+    public RecipeCommand saveRecipeCommand(RecipeCommand command) {
+        Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
+
+        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
+        log.debug("Saved RecipeId:" + savedRecipe.getId());
+        return recipeToRecipeCommand.convert(savedRecipe);
     }
 
     @Override
